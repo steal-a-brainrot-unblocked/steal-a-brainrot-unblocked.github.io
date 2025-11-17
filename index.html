@@ -27,9 +27,55 @@
 </script>
 <style>
 
-   video.move4 {
+/* Container wrapper */
+.video-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Play button */
+.video-play-btn {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Triangle shape inside button */
+.video-play-btn::before {
+    content: "";
+    position: absolute;
+    left: 26px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-left: 18px solid #000;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+}
+
+/* Fade-in video animation */
+.fade-video {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.fade-video.show {
+    opacity: 1;
+}
+
+/* Disable image movement animation on video */
+video.move4 {
     animation: none !important;
 }
+
    </style>
 
 
@@ -104,13 +150,30 @@
                 </div>
 <div class="col-md-6">
     <a href="play.html">
-        <div class="image_cta aos-init aos-animate" data-aos="fade-left" data-aos-duration="1200">
-            <video class="move4" style="margin-top: 9rem; width:100%; border-radius:10px;" autoplay muted loop playsinline>
+        <div class="image_cta aos-init aos-animate video-wrapper" data-aos="fade-left" data-aos-duration="1200">
+
+            <!-- Preview Image -->
+            <img class="preview-image move4" 
+                 src="assets/images/image1.png" 
+                 alt="Steal a Brainrot" 
+                 style="margin-top: 70px; width:100%; border-radius:10px;">
+
+            <!-- Play Button -->
+            <div class="video-play-btn"></div>
+
+            <!-- Video -->
+            <video class="fade-video"
+                   style="margin-top: 70px; width:100%; border-radius:10px; display:none;"
+                   autoplay
+                   muted
+                   playsinline>
                 <source src="assets/videos/tutorial.mp4" type="video/mp4">
             </video>
+
         </div>
     </a>
 </div>
+
                 </div>
             </div>
         </div>
@@ -653,5 +716,30 @@
      <script src="app/js/jquery.easing.js"></script>
      <script src="app/js/plugin.js"></script>
      <script src="app/js/count-down.js"></script> 
+
+
+
+   <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const wrapper = document.querySelector(".video-wrapper");
+    const preview = wrapper.querySelector(".preview-image");
+    const video = wrapper.querySelector("video");
+    const playBtn = wrapper.querySelector(".video-play-btn");
+
+    wrapper.addEventListener("click", function(e) {
+        e.preventDefault(); // stop link so video can play
+
+        preview.style.display = "none";
+        playBtn.style.display = "none";
+        video.style.display = "block";
+
+        setTimeout(() => {
+            video.classList.add("show");
+            video.play();
+        }, 50);
+    });
+});
+</script>
+
 </body>
 </html>
